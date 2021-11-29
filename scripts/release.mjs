@@ -24,7 +24,7 @@ if (re.test(log)) {
 	console.log(files);
 
 	for (const file of files) {
-		const { size } = await stat(`./files/${file}`);
+		const { size } = await stat(file);
 		await gh.repos.uploadReleaseAsset({
 			owner: '1chiSensei',
 			repo: 'evaluate-math',
@@ -37,7 +37,7 @@ if (re.test(log)) {
 				'Content-Length': size,
 				'Content-Type': 'application/octet-stream'
 			},
-			data: createReadStream(`./files/${file}`)
+			data: createReadStream(file)
 		});
 	}
 
