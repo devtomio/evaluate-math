@@ -20,7 +20,7 @@ if (re.test(log)) {
 		repo: 'evaluate-math',
 		tag_name: version
 	});
-	const files = await glob('artifacts/**/*.node');
+	const files = await glob('files/**/*.node');
 	console.log(files);
 
 	for (const file of files) {
