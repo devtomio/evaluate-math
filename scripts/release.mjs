@@ -17,10 +17,6 @@ if (re.test(log)) {
 		repo: 'evaluate-math',
 		tag_name: version
 	});
-	await publish({
-		token: process.env.NPM_TOKEN
-	});
-
 	const files = (await readdir('./files')).filter((v) => v.endsWith('.node'));
 
 	for (const file of files) {
@@ -40,4 +36,6 @@ if (re.test(log)) {
 			data: createReadStream(`./files/${file}.node`)
 		});
 	}
+
+	await publish({ token: process.env.TOKEN });
 }
