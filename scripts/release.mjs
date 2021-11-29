@@ -4,7 +4,10 @@ import publish from '@jsdevtools/npm-publish';
 import { createRequire } from 'node:module';
 import { readdir, stat } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
+import Glob from 'glob';
+import { promisify } from 'node:util';
 
+const glob = promisify(Glob);
 const r = createRequire(import.meta.url);
 const { version } = r('../package.json');
 const re = /(?:(?<=^v?|\sv?)(?:(?:0|[1-9]\d{0,9})\.){2}(?:0|[1-9]\d{0,9})(?:-(?:0|[1-9]\d*?|[\da-z-]*?[a-z-][\da-z-]*?){0,100}(?:\.(?:0|[1-9]\d*?|[\da-z-]*?[a-z-][\da-z-]*?))*?){0,100}(?:\+[\da-z-]+?(?:\.[\da-z-]+?)*?){0,100}\b){1,200}/gi;
@@ -17,7 +20,7 @@ if (re.test(log)) {
 		repo: 'evaluate-math',
 		tag_name: version
 	});
-	const files = (await readdir('./files')).filter((v) => v.endsWith('.node'));
+	const files = await glob('artifacts/**/*.node');
 	console.log(files);
 
 	for (const file of files) {
@@ -38,5 +41,5 @@ if (re.test(log)) {
 		});
 	}
 
-	await publish({ token: process.env.TOKEN });
+	await publish({ token: process.env.NPM_TOKEN });
 }
