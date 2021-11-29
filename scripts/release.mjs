@@ -21,10 +21,10 @@ if (re.test(log)) {
 		token: process.env.NPM_TOKEN
 	});
 
-	const files = (await readdir('.')).filter((v) => v.endsWith('.node'));
+	const files = (await readdir('./files')).filter((v) => v.endsWith('.node'));
 
 	for (const file of files) {
-		const { size } = await stat(`./${file}`);
+		const { size } = await stat(`./files/${file}.node`);
 		await gh.repos.uploadReleaseAsset({
 			owner: '1chiSensei',
 			repo: 'evaluate-math',
@@ -37,7 +37,7 @@ if (re.test(log)) {
 				'Content-Length': size,
 				'Content-Type': 'application/octet-stream'
 			},
-			data: createReadStream(`./${file}`)
+			data: createReadStream(`./files/${file}.node`)
 		});
 	}
 }
