@@ -18,9 +18,10 @@ if (re.test(log)) {
 		tag_name: version
 	});
 	const files = (await readdir('./files')).filter((v) => v.endsWith('.node'));
+	console.log(files);
 
 	for (const file of files) {
-		const { size } = await stat(`./files/${file}.node`);
+		const { size } = await stat(`./files/${file}`);
 		await gh.repos.uploadReleaseAsset({
 			owner: '1chiSensei',
 			repo: 'evaluate-math',
@@ -33,7 +34,7 @@ if (re.test(log)) {
 				'Content-Length': size,
 				'Content-Type': 'application/octet-stream'
 			},
-			data: createReadStream(`./files/${file}.node`)
+			data: createReadStream(`./files/${file}`)
 		});
 	}
 
