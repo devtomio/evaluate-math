@@ -2,10 +2,11 @@ import { execSync } from 'node:child_process';
 import { Octokit } from '@octokit/rest';
 import publish from '@jsdevtools/npm-publish';
 import { createRequire } from 'node:module';
-import { readdir, stat } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
 import Glob from 'glob';
 import { promisify } from 'node:util';
+import { basename } from 'node:path';
 
 const glob = promisify(Glob);
 const r = createRequire(import.meta.url);
@@ -28,7 +29,7 @@ if (re.test(log)) {
 		await gh.repos.uploadReleaseAsset({
 			owner: '1chiSensei',
 			repo: 'evaluate-math',
-			name: file,
+			name: basename(file),
 			release_id: release.data.id,
 			mediaType: {
 				format: 'raw'
